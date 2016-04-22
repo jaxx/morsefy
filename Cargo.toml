@@ -1,0 +1,15 @@
+[package]
+name = "morsefy"
+version = "0.1.0"
+authors = ["Jakko Sikkar <jakko.sikkar@gmail.com>"]
+
+[lib]
+name = "morsefy"
+path = "src/morsefy/lib.rs"
+
+[[bin]]
+name = "morsefy"
+path = "src/bin/main.rs"
+
+[dependencies]
+kernel32-sys = "0.2.2"
