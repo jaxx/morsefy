@@ -46,6 +46,16 @@ fn map_char<'a>(c: char) -> &'a str {
         Some('j') => ".---",
         Some('k') => "-.-",
         Some('l') => ".-..",
+        Some('m') => "--",
+        Some('n') => "-.",
+        Some('o') => "---",
+        Some('p') => ".--.",
+        Some('q') => "--.-",
+        Some('r') => ".-.",
+        Some('s') => "...",
+        Some('t') => "-",
+        Some('u') => "..-",
+        Some('v') => "...-",
         Some(_) | None => panic!("Mapping not found."),
     }
 }
