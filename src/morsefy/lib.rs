@@ -1,6 +1,12 @@
 extern crate kernel32;
 
 use std::io::{Error, Result};
+use std::thread;
+use std::time::Duration;
+
+const DOT_DURATION: u32 = 200;
+const DASH_DURATION: u32 = 3 * DOT_DURATION;
+const WORD_SEPARATOR: u32 = 7 * DOT_DURATION;
 
 #[derive(Debug)]
 pub struct Morse {
@@ -18,11 +24,16 @@ impl Morse {
 
             for morse_char in morse_str.chars() {
                 match morse_char {
-                    '.' => beep(750, 200).unwrap(),
-                    '-' => beep(750, 600).unwrap(),
+                    '.' => beep(750, DOT_DURATION).unwrap(),
+                    '-' => beep(750, DASH_DURATION).unwrap(),
+                    ' ' => thread::sleep(Duration::from_millis(WORD_SEPARATOR as u64)),
                     _ => panic!("Wrong morse signal")
                 }
+
+                thread::sleep(Duration::from_millis(DOT_DURATION as u64));
             }
+
+            thread::sleep(Duration::from_millis(DASH_DURATION as u64));
         }
     }
 }
@@ -70,6 +81,7 @@ fn map_char<'a>(c: char) -> &'a str {
         Some('8') => "---..",
         Some('9') => "----.",
         Some('0') => "-----",
+        Some(' ') => " ",
         Some(_) | None => panic!("Mapping not found."),
     }
 }
