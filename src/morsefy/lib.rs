@@ -26,14 +26,14 @@ impl Morse {
                 match morse_char {
                     '.' => beep(750, DOT_DURATION).unwrap(),
                     '-' => beep(750, DASH_DURATION).unwrap(),
-                    ' ' => thread::sleep(Duration::from_millis(WORD_SEPARATOR as u64)),
+                    ' ' => pause(WORD_SEPARATOR),
                     _ => panic!("Wrong morse signal")
                 }
 
-                thread::sleep(Duration::from_millis(DOT_DURATION as u64));
+                pause(DOT_DURATION);
             }
 
-            thread::sleep(Duration::from_millis(DASH_DURATION as u64));
+            pause(DASH_DURATION);
         }
     }
 }
@@ -41,6 +41,10 @@ impl Morse {
 fn clean_text(text: &str) -> String {
     let words: Vec<&str> = text.split_whitespace().collect();
     words.join(" ")
+}
+
+fn pause(duration: u32) {
+    thread::sleep(Duration::from_millis(duration as u64));
 }
 
 fn map_char<'a>(c: char) -> &'a str {
@@ -82,7 +86,7 @@ fn map_char<'a>(c: char) -> &'a str {
         Some('9') => "----.",
         Some('0') => "-----",
         Some(' ') => " ",
-        Some(_) | None => panic!("Mapping not found."),
+        Some(_) | None => panic!("Character mapping not found.")
     }
 }
 
@@ -98,6 +102,7 @@ fn beep(freq: u32, duration: u32) -> Result<()> {
 
 #[test]
 fn clear_text_test() {
-    assert_eq!(&clean_text("see    on    test"), "see on test");
-    assert_eq!(&clean_text("see "), "see");
+    assert_eq!(&clean_text("this    is    a test"), "this is a test");
+    assert_eq!(&clean_text("this "), "this");
+    assert_eq!(&clean_text(""), "");
 }
